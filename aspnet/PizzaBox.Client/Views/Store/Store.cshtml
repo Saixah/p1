@@ -1,6 +1,10 @@
+@{
+  StoreViewModel _store = new StoreViewModel();
+  _store.Stores = ViewBag.Stores;
+}
 <ul>
-  @foreach(string Store in ViewBag.Stores)
+  @foreach(var Store in _store.Stores)
   {
-    <li>@Store</li>
+    <li>@Store.Name</li>
   }
 </ul>

@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
+using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Client.Models
 {
   public class StoreViewModel
   {
-      public List<String> Stores {get;set;}
+      public IEnumerable<Store> Stores {get;set;}
 
       public StoreViewModel()
       {
-        Stores = new List<String>(){
-          "Dallas","Houston","Jefferson"
-        };
+          this.Stores = Stores;
       }
   }
 }
