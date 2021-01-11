@@ -1,10 +1,8 @@
-@{
-  StoreViewModel _store = new StoreViewModel();
-  _store.Stores = ViewBag.Stores;
+@model PizzaBox.Client.Models.StoreViewModel;
+
+<header>Choose a Store</header>
+@foreach(var Store in ViewBag.Stores)
+{
+  <input type="radio" id=@Store.Name name="Store" value=@Store.Name>
+  <label for=@Store.Name>@Store.Name</label>
 }
-<ul>
-  @foreach(var Store in _store.Stores)
-  {
-    <li>@Store.Name</li>
-  }
-</ul>
