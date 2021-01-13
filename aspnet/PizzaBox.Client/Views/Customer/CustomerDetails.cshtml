@@ -1,0 +1,13 @@
+@model PizzaBox.Client.Models.CustomerViewModel;
+
+Hello @Model.User.Name
+
+@using (@Html.BeginForm("Get", "Order", FormMethod.Get))
+{
+  <input type="submit" name = "Order" class="btn btn-default" value="Create Order" />
+}
+
+@using (@Html.BeginForm("ExistingUser", "Customer", FormMethod.Post))
+{
+  <input type="submit" name = "Username" class="btn btn-default" value="View Order History" />
+}

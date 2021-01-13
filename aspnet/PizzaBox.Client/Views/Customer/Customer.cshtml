@@ -1,0 +1,22 @@
+@model PizzaBox.Client.Models.CustomerViewModel;
+
+<header>Choose a User</header>
+@using (@Html.BeginForm("ExistingUser", "Customer", FormMethod.Post))
+{
+  @Html.AntiForgeryToken()
+  @foreach (var item in Model.Users)
+  {
+    @Html.RadioButtonFor(m => m.Username, item.Name)
+    @Html.LabelFor(m => m.Username, item.Name)
+  }
+  <input type="submit" name = "Username" class="btn btn-default" value="SendUser" />
+}
+
+@using (Html.BeginForm("NewUser","Customer", FormMethod.Post))
+  {
+    <div class="form-group">
+        <input type="text" name="Username" />
+        <input type="submit" class="btn btn-default" value="Create New User" />
+         @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+    </div>
+  }
