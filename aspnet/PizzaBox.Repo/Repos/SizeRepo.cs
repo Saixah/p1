@@ -5,7 +5,7 @@ using PizzaBox.Storage;
 
 namespace PizzaBox.Repo.Repos
 {
-  public class SizeRepo : AllRepo
+  public class SizeRepo
   {
 
       private PizzaBoxContext _context;
@@ -15,22 +15,17 @@ namespace PizzaBox.Repo.Repos
       }
       public IEnumerable<Size> ReadSize()
         {
-            return _db.Size;
-        }
-
-        public void DisplaySize()
-        {
-            DisplayItem(ReadSize());
+            return _context.Size;
         }
 
         public Size ReadOneSize(string Name)
         {
-            return _db.Size.FirstOrDefault(s => s.name.Equals(Name));
+            return _context.Size.FirstOrDefault(s => s.name.Equals(Name));
         }
 
         public Size ReadOneSize(int UserInput)
         {
-            return _db.Size.ToList().ElementAt(UserInput);
+            return _context.Size.ToList().ElementAt(UserInput);
         }
   }
 }

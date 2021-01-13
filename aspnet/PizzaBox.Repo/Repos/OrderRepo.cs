@@ -6,7 +6,7 @@ using PizzaBox.Storage;
 
 namespace PizzaBox.Repo.Repos
 {
-  public class OrderRepo : AllRepo
+  public class OrderRepo
   {
 
     private PizzaBoxContext _context;
@@ -17,35 +17,20 @@ namespace PizzaBox.Repo.Repos
 
     public IEnumerable<Order> ReadOrders()
     {
-        return _db.Orders;
-    }
-    public void DisplayOrders()
-    {
-        DisplayItem(ReadOrders());
-    }
-    public void DisplayOrderByStore(Store Store)
-    {
-        var Orders = GetOrderByStore(Store);
-        DisplayItem(Orders);
+        return _context.Orders;
     }
     public IEnumerable<Order> GetOrderByStore(Store Store)
     {
-        return _db.Orders.Where(p => p.Store == Store);
+        return _context.Orders.Where(p => p.Store == Store);
     }
       public IEnumerable<Order> GetOrderByUser(User User)
     {
-      return _db.Orders.Where(p => p.User == User).Include(p => p.Store);
-    }
-
-    public void DisplayOrderByUser(User User)
-    {
-        var Orders = _db.Orders.Where(p => p.User == User);
-        DisplayItem(Orders);
+      return _context.Orders.Where(p => p.User == User).Include(p => p.Store);
     }
 
     public void AddOrder(Order Order)
     {
-        _db.Add(Order);
+        _context.Add(Order);
     }
   }
 }

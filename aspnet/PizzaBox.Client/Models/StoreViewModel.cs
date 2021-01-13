@@ -8,6 +8,7 @@ namespace PizzaBox.Client.Models
   {
       public IEnumerable<Store> Stores {get;set;}
 
+
       public StoreViewModel()
       {
           this.Stores = Stores;

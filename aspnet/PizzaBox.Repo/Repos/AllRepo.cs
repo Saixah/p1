@@ -1,27 +1,92 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using PizzaBox.Domain.Abstracts;
-using PizzaBox.Domain.Models;
 using PizzaBox.Storage;
 
 namespace PizzaBox.Repo.Repos
 {
     public class AllRepo
     {
-        protected readonly PizzaBoxContext _db = new PizzaBoxContext();
+        protected readonly PizzaBoxContext _db;
+        private StoreRepo _StoreRepo;
+        private UserRepo _UserRepo;
+        private OrderRepo _OrderRepo;
+        private ToppingRepo _ToppingRepo;
+        private SizeRepo _SizeRepo;
+        private CrustRepo _CrustRepo;
 
-        public AllRepo()
+        public AllRepo(PizzaBoxContext context)
         {
-          new StoreRepo(_db);
-          new UserRepo(_db);
-          new OrderRepo(_db);
-          new ToppingRepo(_db);
-          new SizeRepo(_db);
-          new CrustRepo(_db);
+          _db = context;
+        }
+        public StoreRepo StoreRepo
+        {
+          get
+          {
+              if(_StoreRepo == null)
+              {
+                _StoreRepo = new StoreRepo(_db);
+              }
+              return _StoreRepo;
+          }
+        }
+        public UserRepo UserRepo
+        {
+          get
+          {
+              if(_UserRepo == null)
+              {
+                _UserRepo = new UserRepo(_db);
+              }
+              return _UserRepo;
+          }
         }
 
+        public OrderRepo OrderRepo
+        {
+          get
+          {
+              if(_OrderRepo == null)
+              {
+                _OrderRepo = new OrderRepo(_db);
+              }
+              return _OrderRepo;
+          }
+        }
+
+        public ToppingRepo ToppingRepo
+        {
+          get
+          {
+              if(_ToppingRepo == null)
+              {
+                _ToppingRepo = new ToppingRepo(_db);
+              }
+              return _ToppingRepo;
+          }
+        }
+
+        public SizeRepo SizeRepo
+        {
+          get
+          {
+              if(_SizeRepo == null)
+              {
+                _SizeRepo = new SizeRepo(_db);
+              }
+              return _SizeRepo;
+          }
+        }
+        public CrustRepo CrustRepo
+        {
+          get
+          {
+              if(_CrustRepo == null)
+              {
+                _CrustRepo = new CrustRepo(_db);
+              }
+              return _CrustRepo;
+          }
+        }
         protected void DisplayItem<T>(IEnumerable<T> List)
         {
             foreach (T item in List)
@@ -34,5 +99,6 @@ namespace PizzaBox.Repo.Repos
         {
           _db.SaveChanges();
         }
+
     }
 }

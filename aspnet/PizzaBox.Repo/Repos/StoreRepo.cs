@@ -6,7 +6,7 @@ using PizzaBox.Storage;
 
 namespace PizzaBox.Repo.Repos
 {
-  public class StoreRepo : AllRepo
+  public class StoreRepo
   {
     private PizzaBoxContext _context;
     public StoreRepo(PizzaBoxContext _db)
@@ -15,22 +15,16 @@ namespace PizzaBox.Repo.Repos
     }
     public IEnumerable<Store> ReadStores()
     {
-      return _db.Stores;
+      return _context.Stores;
     }
-
-    public void DisplayStores()
-    {
-      DisplayItem(ReadStores());
-    }
-
     public Store ReadOneStore(string Name)
     {
-      return _db.Stores.SingleOrDefault(s => s.Name == Name);
+      return _context.Stores.SingleOrDefault(s => s.Name == Name);
     }
 
     public Store ReadOneStore(int UserInt)
     {
-      return _db.Stores.ToList().ElementAt(UserInt);
+      return _context.Stores.ToList().ElementAt(UserInt);
     }
 
     public List<APizzaModel> GetPizzasFromStore(string StoreName)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 
@@ -7,17 +8,13 @@ namespace PizzaBox.Storage
 {
     public class PizzaBoxContext : DbContext
     {
+        public PizzaBoxContext(DbContextOptions<PizzaBoxContext> options) : base(options){}
         public DbSet<Store> Stores { get; set; }
         public DbSet<Topping> Topping {get; set;}
         public DbSet<Order> Orders{get;set;}
         public DbSet<Crust> Crust {get; set;}
         public DbSet<Size> Size {get; set;}
         public DbSet<User> Users { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder builder)
-        {
-            builder.UseSqlServer("Server=isaiahpizzaworld.database.windows.net;Initial Catalog=pizzaworlddb;User ID=sqladmin;Password=Password1234;");
-        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

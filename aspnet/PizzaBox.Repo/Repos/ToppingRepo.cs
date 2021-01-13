@@ -5,7 +5,7 @@ using PizzaBox.Storage;
 
 namespace PizzaBox.Repo.Repos
 {
-  public class ToppingRepo : AllRepo
+  public class ToppingRepo
   {
 
       private PizzaBoxContext _context;
@@ -15,22 +15,17 @@ namespace PizzaBox.Repo.Repos
       }
       public IEnumerable<Topping> ReadToppings()
       {
-          return _db.Topping;
+          return _context.Topping;
       }
 
       public Topping ReadOneTopping(int UserInt)
       {
-          return _db.Topping.ToList().ElementAt(UserInt);
-      }
-
-      public void DisplayToppings()
-      {
-          DisplayItem(ReadToppings());
+          return _context.Topping.ToList().ElementAt(UserInt);
       }
 
       public Topping ReadOneTopping(string Name)
       {
-          return _db.Topping.FirstOrDefault(s => s.name.Equals(Name));
+          return _context.Topping.FirstOrDefault(s => s.name.Equals(Name));
       }
   }
 }

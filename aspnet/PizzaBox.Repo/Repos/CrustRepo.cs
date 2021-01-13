@@ -5,7 +5,7 @@ using PizzaBox.Storage;
 
 namespace PizzaBox.Repo.Repos
 {
-  public class CrustRepo : AllRepo
+  public class CrustRepo
   {
     private PizzaBoxContext _context;
     public CrustRepo(PizzaBoxContext _db)
@@ -14,21 +14,17 @@ namespace PizzaBox.Repo.Repos
     }
     public IEnumerable<Crust> ReadCrust()
     {
-        return _db.Crust;
-    }
-    public void DisplayCrust()
-    {
-        DisplayItem(ReadCrust());
+        return _context.Crust;
     }
 
     public Crust ReadOneCrust(string Name)
     {
-        return _db.Crust.FirstOrDefault(s => s.name.Equals(Name));
+        return _context.Crust.FirstOrDefault(s => s.name.Equals(Name));
     }
 
     public Crust ReadOneCrust(int UserInput)
     {
-        return _db.Crust.ToList().ElementAt(UserInput);
+        return _context.Crust.ToList().ElementAt(UserInput);
     }
   }
 }
