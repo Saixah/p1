@@ -1,0 +1,31 @@
+@model PizzaBox.Client.Models.PizzaViewModel;
+
+<header>Create Your Order!!!!</header>
+
+@using (Html.BeginForm("MakeNewPizza", "Customer", FormMethod.Post))
+{
+  @Html.AntiForgeryToken()
+    <div>
+        <div>
+            @foreach (var item in Model.DisplaySizes)
+            {
+              @Html.RadioButtonFor(m => m.SizeName, item.name)
+              @Html.LabelFor(m => m.SizeName, item.name)
+            }
+        </div>
+            @foreach (var item in Model.DisplayCrusts)
+            {
+              @Html.RadioButtonFor(m => m.CrustName, item.name)
+              @Html.LabelFor(m => m.CrustName, item.name)
+            }
+          <div>
+            @foreach (var item in Model.DisplayToppings)
+            {
+              @Html.CheckBoxFor(m=>m.IsChecked)
+              @Html.HiddenFor(m =>m.ToppingName);
+              @Html.LabelFor(m => m.ToppingName, item.name)
+            }
+        </div>
+    </div>
+    <input type="submit" value="Create Pizza" />
+}

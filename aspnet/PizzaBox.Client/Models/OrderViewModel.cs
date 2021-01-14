@@ -1,23 +1,18 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.Extensions.Configuration;
+using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
-using PizzaBox.Repo.Repos;
 
 namespace PizzaBox.Client.Models
 {
   public class OrderViewModel
   {
       public IEnumerable<Store> Stores {get; set;}
-
       [Required]
-      public string Store {get; set;}
-
-      public OrderViewModel()
-      {
-
-        // Stores = Repo.StoreRepo.ReadStores();
-      }
-
+      public string StoreName {get; set;}
+      public Store Store {get;set;}
+      public ICollection<APizzaModel> Pizzas {get; set;}
+      public APizzaModel Pizza{get;set;}
+      public string PizzaName {get;set;}
   }
 }
