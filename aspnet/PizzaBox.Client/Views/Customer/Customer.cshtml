@@ -1,7 +1,7 @@
 @model PizzaBox.Client.Models.CustomerViewModel;
 <style>
 
-ul {
+ol {
     list-style: none;
     -moz-column-count: 4;
     -moz-column-gap: 20px;
@@ -16,13 +16,13 @@ ul {
 @using (@Html.BeginForm("ExistingUser", "Customer", FormMethod.Post))
 {
   @Html.AntiForgeryToken()
-  <ul>
+  <ol>
   @foreach (var item in Model.Users)
   {
     <li>@Html.RadioButtonFor(m => m.Username, item.Name)
     @Html.LabelFor(m => m.Username, item.Name)</li>
   }
-  </ul>
+  </ol>
   <input type="submit" name = "Username" value="Choose User" style="float: left;"/>
 }
 @using (Html.BeginForm("NewUser","Customer", FormMethod.Post))
