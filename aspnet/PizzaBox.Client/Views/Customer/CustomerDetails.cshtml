@@ -3,7 +3,9 @@
 Hello @Model.User.Name
 
 @Html.AntiForgeryToken()
-@Html.ActionLink("Create Order", "GoToOrder", "Customer")
+@Html.ActionLink("Create Order", "DisplayStores", "Customer")
+
+<header></br>Previous Orders</header>
 @foreach (var item in Model.OrderHistory)
 {
   <p>@Html.DisplayFor(m =>item)</p>
