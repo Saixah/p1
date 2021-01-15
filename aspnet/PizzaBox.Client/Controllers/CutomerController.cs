@@ -63,31 +63,75 @@ namespace PizzaBox.Client.Controllers
     [ValidateAntiForgeryToken]
     public IActionResult SelectStore(string id,OrderViewModel Order)
     {
-      User user = new User();
-      user = Repo.UserRepo.ReadOneUser(id);
-      user.ChosenStore = Repo.StoreRepo.ReadOneStore(Order.StoreName);
+      User _user = new User();
+      _user = Repo.UserRepo.ReadOneUser(id);
+      _user.ChosenStore = Repo.StoreRepo.ReadOneStore(Order.StoreName);
+      Repo.UserRepo.UpdateUser(_user);
       Repo.Save();
       var Pizza = new PizzaViewModel(Repo);
+      ViewBag.Username = _user.Name;
       return View("AddPizza",Pizza);
     }
 
     [HttpPost("/MakeNewPizza")]
     [ValidateAntiForgeryToken]
-    public IActionResult MakeNewPizza(PizzaViewModel Pizza)
+    public IActionResult MakeNewPizza(string id,string orderid,PizzaViewModel Pizza)
     {
-      var _order = new Order();
+      User _user;
+      Order _order;
+      _user = Repo.UserRepo.GetFullUserByName(id);
+      decimal Price = 0;
+      if (orderid !=null)
+      {
+        Price = Repo.OrderRepo.GetOrderById(long.Parse(orderid)).Price;
+      }
+
+      if (orderid == null){  _order = new Order();  }
+      else{  _order = Repo.OrderRepo.FindByID(long.Parse(orderid));  }
+
+      ViewBag.OrderId = _order.EntityId;
+      ViewBag.Username = _user.Name;
+
       APizzaModel _pizza = new APizzaModel();
       _pizza.Toppings = new List<Topping>();
       _pizza.Crust = Repo.CrustRepo.ReadOneCrust(Pizza.CrustName);
       _pizza.Size = Repo.SizeRepo.ReadOneSize(Pizza.SizeName);
+
+      Price += _pizza.Crust.price;
+      Price += _pizza.Size.price;
       foreach(var topping in Pizza.ToppingsNames)
       {
-        _pizza.Toppings.Add(Repo.ToppingRepo.ReadOneTopping(topping));
+        var _topping = Repo.ToppingRepo.ReadOneTopping(topping);
+        _pizza.Toppings.Add(_topping);
+        Price+=_topping.price;
       }
+
+      _order.Price = Price;
+      _order.Store = _user.ChosenStore;
       _order.Pizzas.Add(_pizza);
+      _user.Orders.Add(_order);
+
+      Repo.Save();
       Order = new OrderViewModel();
-      Order.Pizzas = _order.Pizzas;
+      if(orderid ==null)
+      {
+        Order.Pizzas = _order.Pizzas;
+      }
+      else
+      {
+        Order.Pizzas = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
+      }
+
       return View("OrderList",Order);
+    }
+
+    [HttpPost("/MakeAnother")]
+    public IActionResult MakeAnother(string id, string orderid,OrderViewModel Order)
+    {
+      ViewBag.Username = id;
+      ViewBag.OrderId = orderid;
+      var Pizza = new PizzaViewModel(Repo);
+      return View("AddPizza",Pizza);
     }
   }
 }
