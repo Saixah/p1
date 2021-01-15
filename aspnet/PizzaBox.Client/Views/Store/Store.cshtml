@@ -1,8 +1,13 @@
 @model PizzaBox.Client.Models.StoreViewModel;
 
-<header>Choose a Store</header>
-@foreach(var Store in ViewBag.Stores)
+@using (@Html.BeginForm("StoreDetails", "Store", FormMethod.Post))
 {
-  <input type="radio" id=@Store.Name name="Store" value=@Store.Name>
+  @Html.AntiForgeryToken();
+<header>Choose a Store</header>
+@foreach(var Store in Model.Stores)
+{
+  <input type="radio" id=@Store.Name name="StoreName" value=@Store.Name>
   <label for=@Store.Name>@Store.Name</label>
+}
+<input type="submit" name = "StoreName" class="btn btn-default" value="Choose Store" />
 }

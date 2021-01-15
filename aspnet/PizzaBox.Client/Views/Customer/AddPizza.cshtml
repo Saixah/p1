@@ -1,32 +1,72 @@
-@model PizzaBox.Client.Models.OrderViewModel;
+@model PizzaBox.Client.Models.PizzaViewModel;
 
 <header>Create Your Order!!!!</header>
-
+<br>
 @using (Html.BeginForm("MakeNewPizza", "Customer", FormMethod.Post))
 {
   @Html.AntiForgeryToken()
-    <div>
-        <div>
-            @foreach (var item in Model.PizzaViewModel.DisplaySizes)
-            {
-              @Html.RadioButtonFor(m => m.PizzaViewModel.SizeName, item.name)
-              @Html.LabelFor(m => m.PizzaViewModel.SizeName, item.name)
-            }
-        </div>
-            @foreach (var item in Model.PizzaViewModel.DisplayCrusts)
-            {
-              @Html.RadioButtonFor(m => m.PizzaViewModel.CrustName, item.name)
-              @Html.LabelFor(m => m.PizzaViewModel.CrustName, item.name)
-            }
-          <div>
-            @for(int i =0;i<Model.PizzaViewModel.DisplayToppings.Count();i++)
-            {
-              <input type="checkbox" value="@Model.PizzaViewModel.DisplayToppings[i].name"
-               name='ToppingsNames' id="@Model.PizzaViewModel.DisplayToppings[i].name"/> @Model.PizzaViewModel.DisplayToppings[i].name <br />
-            }
-        </div>
-    </div>
+
+    <table style="width:50%">
+          <td>Sizes</td>
+      @foreach (var item in Model.DisplaySizes)
+      {
+        <tr>
+          <td>
+            <input type="radio" asp-for="Size" value="@item.name" />@item.name<br />
+            <td>$@item.price.ToString()</td>
+          </td>
+        </tr>
+      }
+    </table>
+    <br>
+    <table style="width:50%">
+      <tr>
+          <td>Crusts</td>
+      @foreach (var item in Model.DisplayCrusts)
+      {
+        <tr>
+          <td>
+            <input type="radio" asp-for="Crust" value="@item.name" />@item.name<br />
+            <td> $@item.price.ToString()</td>
+          </td>
+          </tr>
+      }
+      </table>
+      <br>
+      <table style="width:50%">
+        <td>Toppings</td>
+        <td></td>
+      @for(int i =0;i<Model.DisplayToppings.Count();i++)
+      {
+        <tr>
+        <td>
+        <input type="checkbox" value="@Model.DisplayToppings.ElementAt(i).name"
+          name='ToppingsNames' id="@Model.DisplayToppings.ElementAt(i).name"/> @Model.DisplayToppings.ElementAt(i).name
+          <td>  $@Model.DisplayToppings.ElementAt(i).price<br /></td>
+        </td>
+        </tr>
+      }
+      </table>
+      <br>
     <input type="submit" value="Create Pizza" />
 
-    @Html.Partial("MadePizza",Model)
+
+
+    @* <table style="width:100%">
+  <tr>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>Age</th>
+  </tr>
+  <tr>
+    <td>Jill</td>
+    <td>Smith</td>
+    <td>50</td>
+  </tr>
+  <tr>
+    <td>Eve</td>
+    <td>Jackson</td>
+    <td>94</td>
+  </tr>
+</table> *@
 }

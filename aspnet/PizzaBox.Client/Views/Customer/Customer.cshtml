@@ -1,20 +1,33 @@
 @model PizzaBox.Client.Models.CustomerViewModel;
+<style>
 
+ul {
+    list-style: none;
+    -moz-column-count: 4;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 20px;
+    column-count: 4;
+    column-gap: 20px;
+}
+
+</style>
 <header>Choose a User</header>
 @using (@Html.BeginForm("ExistingUser", "Customer", FormMethod.Post))
 {
   @Html.AntiForgeryToken()
+  <ul>
   @foreach (var item in Model.Users)
   {
-    @Html.RadioButtonFor(m => m.Username, item.Name)
-    @Html.LabelFor(m => m.Username, item.Name)
+    <li>@Html.RadioButtonFor(m => m.Username, item.Name)
+    @Html.LabelFor(m => m.Username, item.Name)</li>
   }
-  <input type="submit" name = "Username" value="SendUser" />
+  </ul>
+  <input type="submit" name = "Username" value="Choose User" style="float: left;"/>
 }
-
 @using (Html.BeginForm("NewUser","Customer", FormMethod.Post))
   {
-    <div class="form-group">
+    <div style="float: right;" class="form-group">
         <input type="text" name="Username" />
         <input type="submit"  value="Create New User" />
          @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })

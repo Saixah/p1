@@ -1,0 +1,10 @@
+@model PizzaBox.Client.Models.OrderViewModel;
+@using (@Html.BeginForm("DisplayOptions", "Customer", FormMethod.Get))
+{
+  @Html.AntiForgeryToken()
+    @foreach (var item in Model.Pizzas)
+    {
+      <p>@Html.DisplayFor(m =>item)</p>
+    }
+  <input type="submit" name = "back" class="btn btn-default" value="Add Another"/>
+}

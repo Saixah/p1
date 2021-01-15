@@ -1,18 +1,16 @@
-@model PizzaBox.Client.Models.CustomerViewModel;
+@model PizzaBox.Client.Models.StoreViewModel;
+Welcome @Model.StoreName
+  @foreach (var item in Model.OrderHistory)
+  {
 
-Hello @Model.User.Name
-
-@Html.AntiForgeryToken()
-@Html.ActionLink("Create Order", "DisplayStores", "Customer",new {id = @Model.Username})
-
-
+  }
 <header>Order History</header>
 <table style="width:100%">
   <tr>
     <th>Order Number</th>
     <th>Order Date</th>
     <th>Order Price</th>
-    <th>Store</th>
+    <th>User</th>
   </tr>
   @foreach (var item in Model.OrderHistory)
   {
@@ -20,8 +18,7 @@ Hello @Model.User.Name
       <td>@Html.DisplayFor(m=>item.EntityId)</td>
       <td>@Html.DisplayFor(m=>item.OrderTime)</td>
       <td>@Html.DisplayFor(m=>item.Price)</td>
-      <td>@Html.DisplayFor(m=>item.Store.Name)</td>
+      <td>@Html.DisplayFor(m=>item.User.Name)</td>
     </tr>
 }
 </table>
-
