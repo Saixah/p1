@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using PizzaBox.Client.Models;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
@@ -33,13 +31,9 @@ namespace PizzaBox.Client.Controllers
     [ValidateAntiForgeryToken]
     public IActionResult NewUser(CustomerViewModel Customer)
     {
-      if(ModelState.IsValid)
-      {
         Repo.UserRepo.AddUser(new User(Customer.Username));
         Repo.Save();
         return RedirectToAction("GetUser");
-      }
-      else { return View("Customer",Customer);  }
     }
 
     [HttpPost("/Details")]
@@ -79,15 +73,19 @@ namespace PizzaBox.Client.Controllers
     {
       User _user;
       Order _order;
-      _user = Repo.UserRepo.GetFullUserByName(id);
       decimal Price = 0;
-      if (orderid !=null)
+
+      _user = Repo.UserRepo.GetFullUserByName(id);
+
+      if (orderid == null)
+      {
+         _order = new Order();
+      }
+      else
       {
         Price = Repo.OrderRepo.GetOrderById(long.Parse(orderid)).Price;
+        _order = Repo.OrderRepo.FindByID(long.Parse(orderid));
       }
-
-      if (orderid == null){  _order = new Order();  }
-      else{  _order = Repo.OrderRepo.FindByID(long.Parse(orderid));  }
 
       ViewBag.OrderId = _order.EntityId;
       ViewBag.Username = _user.Name;
@@ -113,6 +111,7 @@ namespace PizzaBox.Client.Controllers
 
       Repo.Save();
       Order = new OrderViewModel();
+
       if(orderid ==null)
       {
         Order.Pizzas = _order.Pizzas;
@@ -121,7 +120,6 @@ namespace PizzaBox.Client.Controllers
       {
         Order.Pizzas = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
       }
-
       return View("OrderList",Order);
     }
 
@@ -132,6 +130,33 @@ namespace PizzaBox.Client.Controllers
       ViewBag.OrderId = orderid;
       var Pizza = new PizzaViewModel(Repo);
       return View("AddPizza",Pizza);
+    }
+
+    [HttpPost("/Delete")]
+    public IActionResult Delete(string pizzaid,string orderid,string id)
+    {
+      decimal NewPrice = new decimal();
+      Order _order = Repo.OrderRepo.GetOrderById(long.Parse(orderid));
+      APizzaModel _pizza = Repo.OrderRepo.GetPizza(long.Parse(orderid),long.Parse(pizzaid));
+
+      NewPrice = _order.Price;
+      NewPrice -= _pizza.Crust.price;
+      NewPrice -= _pizza.Size.price;
+      foreach(var topping in _pizza.Toppings)
+      {
+        NewPrice -= topping.price;
+      }
+
+      _order.Price = NewPrice;
+      Repo.OrderRepo.DeletePizzaByID(_pizza);
+
+      Repo.Save();
+
+      var Order = new OrderViewModel();
+      Order.Pizzas = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
+      ViewBag.Username = id;
+      ViewBag.OrderId = orderid;
+      return View("OrderList",Order);
     }
   }
 }

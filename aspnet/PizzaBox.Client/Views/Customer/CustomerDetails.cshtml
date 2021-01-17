@@ -3,8 +3,11 @@
 Hello @Model.User.Name
 
 @Html.AntiForgeryToken()
-@Html.ActionLink("Create Order", "DisplayStores", "Customer",new {id = @Model.Username})
-
+@* @Html.ActionLink("Create Order", "DisplayStores", "Customer",new {username = @Model.Username}) *@
+@using (@Html.BeginForm("DisplayStores", "Customer", FormMethod.Get))
+{
+  <input type="submit" name = "username" class="btn btn-default" value="Create New Order"/>
+}
 
 <header>Order History</header>
 <table style="width:100%">

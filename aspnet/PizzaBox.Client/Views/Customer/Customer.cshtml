@@ -25,11 +25,11 @@ ol {
   </ol>
   <input type="submit" name = "Username" value="Choose User" style="float: left;"/>
 }
+
 @using (Html.BeginForm("NewUser","Customer", FormMethod.Post))
   {
     <div style="float: right;" class="form-group">
-        <input type="text" name="Username" />
-        <input type="submit"  value="Create New User" />
-         @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        @Html.TextBoxFor(m=>m.Username)
+        <input type="submit" name="Username" value="Create New User" />
     </div>
   }
