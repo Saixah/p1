@@ -46,7 +46,7 @@ namespace PizzaBox.Client.Controllers
     }
 
     [HttpGet("/CustomerStores/{id}")]
-    public IActionResult DisplayStores()
+    public IActionResult DisplayStores(string id)
     {
       Order = new OrderViewModel(Repo);
       Order.Username = RouteData.Values["id"].ToString();

@@ -33,5 +33,16 @@ namespace PizzaBox.Repo.Repos
     {
         _context.Add(User);
     }
+
+    public void UpdateUser(User _user)
+    {
+      var user = _context.Users.SingleOrDefault(s => s.Name == _user.Name);
+      user.ChosenStore = _user.ChosenStore;
+    }
+
+    public User GetFullUserByName(string name)
+    {
+      return  _context.Users.Where(p => p.Name == name).ToList().First();
+    }
   }
 }

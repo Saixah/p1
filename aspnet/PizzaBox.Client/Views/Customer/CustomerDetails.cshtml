@@ -4,7 +4,7 @@ Hello @Model.User.Name
 
 @Html.AntiForgeryToken()
 @* @Html.ActionLink("Create Order", "DisplayStores", "Customer",new {username = @Model.Username}) *@
-@using (@Html.BeginForm("DisplayStores", "Customer",new {username = @Model.Username}, FormMethod.Get))
+@using (@Html.BeginForm("DisplayStores", "Customer",new {id = @Model.Username}, FormMethod.Get))
 {
   <input type="submit" class="btn btn-default" value="Create New Order"/>
 }
