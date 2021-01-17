@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using PizzaBox.Domain.Models;
 using PizzaBox.Storage;
 
@@ -36,13 +37,14 @@ namespace PizzaBox.Repo.Repos
 
     public void UpdateUser(User _user)
     {
-      var user = _context.Users.SingleOrDefault(s => s.Name == _user.Name);
-      user.ChosenStore = _user.ChosenStore;
+      // var user = _context.Users.SingleOrDefault(s => s.EntityId== _user.EntityId);
+      _context.Update(_user);
+      _context.SaveChanges();
     }
 
     public User GetFullUserByName(string name)
     {
-      return  _context.Users.Where(p => p.Name == name).ToList().First();
+      return  _context.Users.Where(p => p.Name == name).Include(p => p.ChosenStore).First();
     }
   }
 }
