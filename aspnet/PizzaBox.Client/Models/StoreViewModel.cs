@@ -11,6 +11,9 @@ namespace PizzaBox.Client.Models
 
       [Required]
       public string StoreName{get;set;}
+      public decimal MonthlyRev{get;set;}
+      public decimal WeeklyRev{get;set;}
+      public decimal YearlyRev{get;set;}
       public IEnumerable<Order> OrderHistory{get;set;}
       public StoreViewModel()
       {
@@ -18,5 +21,6 @@ namespace PizzaBox.Client.Models
           this.Store = Store;
           this.StoreName = StoreName;
       }
+
   }
 }

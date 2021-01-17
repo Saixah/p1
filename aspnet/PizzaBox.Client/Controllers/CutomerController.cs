@@ -108,6 +108,7 @@ namespace PizzaBox.Client.Controllers
       _order.Store = _user.ChosenStore;
       _order.Pizzas.Add(_pizza);
       _user.Orders.Add(_order);
+      ViewBag.OrderPrice = Price;
 
       Repo.Save();
       Order = new OrderViewModel();
@@ -156,6 +157,7 @@ namespace PizzaBox.Client.Controllers
       Order.Pizzas = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
       ViewBag.Username = id;
       ViewBag.OrderId = orderid;
+      ViewBag.OrderPrice = NewPrice;
       return View("OrderList",Order);
     }
   }

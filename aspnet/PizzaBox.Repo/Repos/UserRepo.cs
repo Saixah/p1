@@ -37,7 +37,6 @@ namespace PizzaBox.Repo.Repos
 
     public void UpdateUser(User _user)
     {
-      // var user = _context.Users.SingleOrDefault(s => s.EntityId== _user.EntityId);
       _context.Update(_user);
       _context.SaveChanges();
     }

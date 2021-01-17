@@ -1,13 +1,13 @@
 @model PizzaBox.Client.Models.OrderViewModel;
 @Html.AntiForgeryToken()
-
 @if(Model.Pizzas.Count != 0)
 {
-  @foreach (var item in Model.Pizzas)
+  foreach (var item in Model.Pizzas)
   {
     @Html.DisplayFor(m =>item)
     @using (@Html.BeginForm("Delete", "Customer",new{id = @ViewBag.Username,orderid = @ViewBag.OrderId, pizzaid = item.EntityId}, FormMethod.Post))
     {
+
       <input type="submit" name = "Delete" class="btn btn-default" value="Delete"/>
     }
   }
@@ -27,5 +27,5 @@ else
   <input type="submit" name = "Done" class="btn btn-default" value="All Done!"/>
 }
 
-
+<p>Total Price : $</p>@ViewBag.OrderPrice
 

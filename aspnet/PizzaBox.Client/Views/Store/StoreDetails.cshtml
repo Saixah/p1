@@ -1,9 +1,6 @@
 @model PizzaBox.Client.Models.StoreViewModel;
 Welcome @Model.StoreName
-  @foreach (var item in Model.OrderHistory)
-  {
-
-  }
+</br>
 <header>Order History</header>
 <table style="width:100%">
   <tr>
@@ -22,3 +19,9 @@ Welcome @Model.StoreName
     </tr>
 }
 </table>
+
+</br>
+<p>Revenue</p>
+Weekly -$ @Html.DisplayFor(Model=>Model.WeeklyRev)
+Monthly -$ @Html.DisplayFor(Model=>Model.MonthlyRev)
+Yearly -$ @Html.DisplayFor(Model=>Model.YearlyRev)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PizzaBox.Domain.Models;
 using PizzaBox.Storage;
 
 namespace PizzaBox.Repo.Repos
@@ -13,6 +14,7 @@ namespace PizzaBox.Repo.Repos
         private ToppingRepo _ToppingRepo;
         private SizeRepo _SizeRepo;
         private CrustRepo _CrustRepo;
+        private PizzaRepo _PizzaRepo;
 
         public AllRepo(PizzaBoxContext context)
         {
@@ -87,6 +89,17 @@ namespace PizzaBox.Repo.Repos
               return _CrustRepo;
           }
         }
+        public PizzaRepo PizzaRepo
+        {
+          get
+          {
+              if(_PizzaRepo == null)
+              {
+                _PizzaRepo = new PizzaRepo(_db);
+              }
+              return _PizzaRepo;
+          }
+        }
         protected void DisplayItem<T>(IEnumerable<T> List)
         {
             foreach (T item in List)
@@ -95,10 +108,25 @@ namespace PizzaBox.Repo.Repos
             }
         }
 
+
         public void Save()
         {
           _db.SaveChanges();
         }
 
+        public decimal GetStoreRevenue(DateTime Time,Store Store)
+        {
+            var Orders = OrderRepo.GetOrderByStore(Store);
+            decimal Revenue = 0;
+            foreach (var order in Orders)
+            {
+                int result = DateTime.Compare(order.OrderTime,Time);
+                if (result > 0)
+                {
+                    Revenue += order.Price;
+                }
+            }
+            return Revenue;
+        }
     }
 }
