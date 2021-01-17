@@ -15,6 +15,7 @@ namespace PizzaBox.Storage
         public DbSet<Crust> Crust {get; set;}
         public DbSet<Size> Size {get; set;}
         public DbSet<User> Users { get; set; }
+        public DbSet<APizzaModel> Pizzas {get;set;}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

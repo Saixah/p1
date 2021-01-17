@@ -45,11 +45,11 @@ namespace PizzaBox.Client.Controllers
       return View("CustomerDetails",Customer);
     }
 
-    [HttpGet("/CustomerStores/{Username}")]
+    [HttpGet("/CustomerStores/{id}")]
     public IActionResult DisplayStores()
     {
       Order = new OrderViewModel(Repo);
-      Order.Username = RouteData.Values["Username"].ToString();
+      Order.Username = RouteData.Values["id"].ToString();
       return View("Order", Order);
     }
 
