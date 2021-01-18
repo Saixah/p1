@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using PizzaBox.Client.Models;
@@ -12,9 +11,7 @@ namespace PizzaBox.Client.Controllers
   public class CustomerController : Controller
   {
     private AllRepo Repo;
-    private CustomerViewModel Customer;
     private OrderViewModel Order;
-    private PizzaViewModel Pizza;
 
     public CustomerController(AllRepo _repo)
     {
@@ -48,9 +45,16 @@ namespace PizzaBox.Client.Controllers
     [HttpGet("/CustomerStores/{id}")]
     public IActionResult DisplayStores(string id)
     {
-      Order = new OrderViewModel(Repo);
-      Order.Username = RouteData.Values["id"].ToString();
-      return View("Order", Order);
+      if(id != null)
+      {
+        Order = new OrderViewModel(Repo);
+        Order.Username = RouteData.Values["id"].ToString();
+        return View("Order", Order);
+      }
+      else
+      {
+        return RedirectToAction("GetUser");
+      }
     }
 
     [HttpPost("/SelectStore")]
@@ -83,8 +87,8 @@ namespace PizzaBox.Client.Controllers
       }
       else
       {
-        Price = Repo.OrderRepo.GetOrderById(long.Parse(orderid)).Price;
-        _order = Repo.OrderRepo.FindByID(long.Parse(orderid));
+        _order = Repo.OrderRepo.GetOrderById(long.Parse(orderid));
+        Price = _order.Price;
       }
 
       ViewBag.OrderId = _order.EntityId;
@@ -102,7 +106,7 @@ namespace PizzaBox.Client.Controllers
       {
         var _topping = Repo.ToppingRepo.ReadOneTopping(topping);
         _pizza.Toppings.Add(_topping);
-        Price+=_topping.price;
+      //   Price+=_topping.price;
       }
 
       _order.Price = Price;
@@ -122,6 +126,7 @@ namespace PizzaBox.Client.Controllers
       {
         var zaList = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
         var tempOrder = new List<APizzaModel>();
+        var toppinglist = new List<Topping>();
         foreach(var za in zaList)
         {
           tempOrder.Add(Repo.OrderRepo.GetPizza(long.Parse(orderid),za.EntityId));
@@ -150,18 +155,17 @@ namespace PizzaBox.Client.Controllers
       NewPrice = _order.Price;
       NewPrice -= _pizza.Crust.price;
       NewPrice -= _pizza.Size.price;
-      foreach(var topping in _pizza.Toppings)
-      {
-        NewPrice -= topping.price;
-      }
+      // foreach(var topping in _pizza.Toppings)
+      // {
+      //   NewPrice -= topping.price;
+      // }
 
-      _order.Price = NewPrice;
       Repo.OrderRepo.DeletePizzaByID(_pizza);
-
+       _order.Price = NewPrice;
+       ViewBag.OrderPrice = NewPrice;
       Repo.Save();
 
       var Order = new OrderViewModel();
-      // Order.Pizzas = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
       var zaList = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
         var tempOrder = new List<APizzaModel>();
         foreach(var za in zaList)
@@ -171,7 +175,6 @@ namespace PizzaBox.Client.Controllers
       Order.Pizzas = tempOrder;
       ViewBag.Username = id;
       ViewBag.OrderId = orderid;
-      ViewBag.OrderPrice = NewPrice;
       return View("OrderList",Order);
     }
   }

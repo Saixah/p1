@@ -1,38 +1,61 @@
 @model PizzaBox.Client.Models.OrderViewModel;
 @Html.AntiForgeryToken()
-<table>
-  <tr>
     @if(Model.Pizzas.Count != 0)
     {
+      var lastPizza = Model.Pizzas.ToList().First();
+      <table style="width: 50%;">
+        <td> Last Pizza Added : </td>
+        <tr>
+          <tr><td>ID : </td><td>@Html.DisplayFor(m=>lastPizza.EntityId)</td></tr>
+          <tr><td>Crust : </td><td>@Html.DisplayFor(m=>lastPizza.Crust.name)</td></tr>
+          <tr><td>Size : </td><td>@Html.DisplayFor(m=>lastPizza.Size.name)</td></tr>
+          @for(int i =0;i<lastPizza.Toppings.Count;i++)
+          {
+            <tr>
+            <td>Topping #@i</td>
+            <td>@lastPizza.Toppings[i].name</td>
+            </tr>
+          }
+          @* <td>@Html.DisplayFor(m=>lastPizza.Toppings)</td> *@
+          @{var price = lastPizza.Size.price + lastPizza.Crust.price;}
+          <tr><td>Price :</td><td>$@price</td></tr>
+        </tr>
+      </table>
+      <br>
+    <table style="width: 50%;">
+      <tr><bold>Total Order</bold></tr>
+      <tr>
       @foreach (var item in Model.Pizzas)
       {
         <tr>
-          <td>@Html.DisplayFor(m=>item.EntityId)</td>
-          <td>@Html.DisplayFor(m=>item.Crust.name)</td>
-          <td>@Html.DisplayFor(m=>item.Size.name)</td>
-          <td>@Html.DisplayFor(m=>item.Toppings)</td>
+          <tr><td>ID : </td><td>@Html.DisplayFor(m=>item.EntityId)</td></tr>
+          <tr><td>Crust : </td><td>@Html.DisplayFor(m=>item.Crust.name)</td></tr>
+          <tr><td>Size : </td><td>@Html.DisplayFor(m=>item.Size.name)</td></tr>
+          @{price = item.Size.price + item.Crust.price;}
+          <tr><td>Price :</td><td>$@price</td></tr>
+          @* <td>@Html.DisplayFor(m=>item.Toppings)</td> *@
         @using (@Html.BeginForm("Delete", "Customer",new{id = @ViewBag.Username,orderid = @ViewBag.OrderId, pizzaid = item.EntityId}, FormMethod.Post))
         {
-          <input type="submit" name = "Delete" class="btn btn-default" value="Delete"/>
+          <td><input type="submit" name = "Delete" value="Delete"/></td>
         }
         </tr>
       }
+        </tr>
+    </table>
     }
 else
 {
   <p>No Pizzas in your cart</p>
 }
-  </tr>
-</table>
-
-<p>Total Price : $ @ViewBag.OrderPrice</p>
+<br>
+<p>Total Price : $@ViewBag.OrderPrice</p>
 
 @using (@Html.BeginForm("MakeAnother", "Customer",new{id = @ViewBag.Username,orderid = ViewBag.OrderId}, FormMethod.Post))
 {
-  <input type="submit" name = "back" class="btn btn-default" value="Add Another"/>
+  <input type="submit" name = "back" value="Add Another"/>
 }
 
 @using (@Html.BeginForm("ExistingUser", "Customer",new{username = @ViewBag.Username}, FormMethod.Post))
 {
-  <input type="submit" name = "Done" class="btn btn-default" value="All Done!"/>
+  <input type="submit" name = "Done" value="All Done!"/>
 }

@@ -54,10 +54,8 @@ namespace PizzaBox.Repo.Repos
     public APizzaModel GetPizza(long orderid, long pizzaid)
     {
       Order order = _context.Orders.Where(p => p.EntityId == orderid).Include(p => p.Pizzas).First();
-      APizzaModel pizza = order.Pizzas.Where(p=>p.EntityId == pizzaid).First();
-
-      APizzaModel pizza2 = _context.Pizzas.Where(p => p.EntityId == pizzaid).Include(p=>p.Crust).Include(p=>p.Size).Include(p=>p.Toppings).First();
-      return pizza2;
+      var pizza = _context.Pizzas.Where(p => p.EntityId == pizzaid).Include(p=>p.Crust).Include(p=>p.Size).Include(p=>p.Toppings).First();
+      return pizza;
     }
     public void DeletePizzaByID(APizzaModel pizza)
     {
