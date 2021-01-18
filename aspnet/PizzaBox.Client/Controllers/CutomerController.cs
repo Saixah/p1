@@ -91,6 +91,7 @@ namespace PizzaBox.Client.Controllers
       ViewBag.Username = _user.Name;
 
       APizzaModel _pizza = new APizzaModel();
+
       _pizza.Toppings = new List<Topping>();
       _pizza.Crust = Repo.CrustRepo.ReadOneCrust(Pizza.CrustName);
       _pizza.Size = Repo.SizeRepo.ReadOneSize(Pizza.SizeName);
@@ -112,14 +113,20 @@ namespace PizzaBox.Client.Controllers
 
       Repo.Save();
       Order = new OrderViewModel();
-
+      Order.PizzaViewModel = new PizzaViewModel();
       if(orderid ==null)
       {
         Order.Pizzas = _order.Pizzas;
       }
       else
       {
-        Order.Pizzas = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
+        var zaList = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
+        var tempOrder = new List<APizzaModel>();
+        foreach(var za in zaList)
+        {
+          tempOrder.Add(Repo.OrderRepo.GetPizza(long.Parse(orderid),za.EntityId));
+        }
+        Order.Pizzas = tempOrder;
       }
       return View("OrderList",Order);
     }
@@ -154,7 +161,14 @@ namespace PizzaBox.Client.Controllers
       Repo.Save();
 
       var Order = new OrderViewModel();
-      Order.Pizzas = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
+      // Order.Pizzas = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
+      var zaList = Repo.OrderRepo.GetOrdersByID(long.Parse(orderid)).Pizzas;
+        var tempOrder = new List<APizzaModel>();
+        foreach(var za in zaList)
+        {
+          tempOrder.Add(Repo.OrderRepo.GetPizza(long.Parse(orderid),za.EntityId));
+        }
+      Order.Pizzas = tempOrder;
       ViewBag.Username = id;
       ViewBag.OrderId = orderid;
       ViewBag.OrderPrice = NewPrice;

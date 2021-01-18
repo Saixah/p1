@@ -65,7 +65,7 @@ namespace PizzaBox.Repo.Repos
       _context.SaveChanges();
     }
 
-    public void ChangeOrderPrice(Order Order,decimal NewPrice)
+    public void ChangeOrderPrice(Order Order)
     {
       _context.Attach(Order);
 
