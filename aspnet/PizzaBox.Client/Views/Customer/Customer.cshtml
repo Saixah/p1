@@ -28,7 +28,7 @@ ol {
 
 @using (Html.BeginForm("NewUser","Customer", FormMethod.Post))
   {
-    <div style="float: right;" class="form-group">
+    <div style="float: right;">
         @Html.TextBoxFor(m=>m.Username)
         <input type="submit" name="Username" value="Create New User" />
     </div>

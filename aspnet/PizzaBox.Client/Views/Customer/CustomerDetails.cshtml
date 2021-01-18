@@ -5,10 +5,16 @@ Hello @Model.User.Name
 @Html.AntiForgeryToken()
 @using (@Html.BeginForm("DisplayStores", "Customer",new {id = @Model.Username}, FormMethod.Get))
 {
-  <input type="submit" class="btn btn-default" value="Create New Order"/>
+  <input type="submit" value="Create New Order"/>
 }
-
+<br>
 <header>Order History</header>
+@if(Model.OrderHistory.Count() == 0)
+{
+<br>
+<p>You Have No Previous Orders</p>
+}
+else{
 <table style="width:100%">
   <tr>
     <th>Order Number</th>
@@ -20,10 +26,11 @@ Hello @Model.User.Name
   {
     <tr>
       <td>@Html.DisplayFor(m=>item.EntityId)</td>
-      <td>@Html.DisplayFor(m=>item.OrderTime)</td>
-      <td>@Html.DisplayFor(m=>item.Price)</td>
+      @* <td>@Html.DisplayFor(m=>item.OrderTime)</td> *@
+      <td>@item.OrderTime.ToString("MM/dd/yyyy h:mm tt")</td>
+      <td>$@Html.DisplayFor(m=>item.Price)</td>
       <td>@Html.DisplayFor(m=>item.Store.Name)</td>
     </tr>
 }
 </table>
-
+}

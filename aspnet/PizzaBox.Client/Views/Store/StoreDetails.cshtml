@@ -1,6 +1,11 @@
 @model PizzaBox.Client.Models.StoreViewModel;
-Welcome @Model.StoreName
-</br>
+Welcome Store: @Model.StoreName
+<p>Revenue  :
+Weekly $@Html.DisplayFor(Model=>Model.WeeklyRev)
+| Monthly $@Html.DisplayFor(Model=>Model.MonthlyRev)
+| Yearly $@Html.DisplayFor(Model=>Model.YearlyRev)
+</p>
+
 <header>Order History</header>
 <table style="width:100%">
   <tr>
@@ -13,15 +18,10 @@ Welcome @Model.StoreName
   {
     <tr>
       <td>@Html.DisplayFor(m=>item.EntityId)</td>
-      <td>@Html.DisplayFor(m=>item.OrderTime)</td>
-      <td>@Html.DisplayFor(m=>item.Price)</td>
+      @* <td>@Html.DisplayFor(m=>item.OrderTime)</td> *@
+      <td>@item.OrderTime.ToString("MM/dd/yyyy h:mm tt")</td>
+      <td>$@Html.DisplayFor(m=>item.Price)</td>
       <td>@Html.DisplayFor(m=>item.User.Name)</td>
     </tr>
 }
 </table>
-
-</br>
-<p>Revenue</p>
-Weekly -$ @Html.DisplayFor(Model=>Model.WeeklyRev)
-Monthly -$ @Html.DisplayFor(Model=>Model.MonthlyRev)
-Yearly -$ @Html.DisplayFor(Model=>Model.YearlyRev)
