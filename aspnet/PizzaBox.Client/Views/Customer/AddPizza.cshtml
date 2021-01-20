@@ -1,6 +1,11 @@
 @model PizzaBox.Client.Models.PizzaViewModel;
 
 <header>Create Your Order!!!!</header>
+
+@Html.ValidationMessageFor(m => m.CrustName, "", new { @class = "text-danger" })
+@Html.ValidationMessageFor(m => m.SizeName, "", new { @class = "text-danger" })
+@Html.ValidationMessageFor(m => m.ToppingsNames, "", new { @class = "text-danger" })
+
 <br>
 @using (Html.BeginForm("MakeNewPizza", "Customer",new {id = ViewBag.Username,orderid = ViewBag.OrderId} ,FormMethod.Post))
 {
@@ -48,4 +53,5 @@
       </table>
       <br>
     <input type="submit" value="Create Pizza" />
+
 }

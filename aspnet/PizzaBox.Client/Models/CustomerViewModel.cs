@@ -5,9 +5,10 @@ using PizzaBox.Repo.Repos;
 
 namespace PizzaBox.Client.Models
 {
-  public class CustomerViewModel: IValidatableObject
+  public class CustomerViewModel
+  // : IValidatableObject
   {
-    [Required]
+    [Required(AllowEmptyStrings=false)]
     public string Username{get;set;}
     public IEnumerable<User> Users { get; set; }
     public User User{get;set;}
@@ -26,12 +27,20 @@ namespace PizzaBox.Client.Models
       OrderView = new OrderViewModel();
     }
 
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-      if(Username == null)
-      {
-        yield return new ValidationResult("cannot be null",new string[] {"Username"});
-      }
-    }
+    // public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    // {
+    //   if(Username == null)
+    //   {
+    //     yield return new ValidationResult("cannot be null",new string[] {"Username"});
+    //   }
+    // }
+    // public ValidationResult isValid(ValidationContext validationContext)
+    // {
+    //   if(Username.Equals("Choose User"))
+    //   {
+    //     return new ValidationResult("Username Cannot Be Null");
+    //   }
+    //   return ValidationResult.Success;
+    // }
   }
 }

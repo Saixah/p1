@@ -1,7 +1,8 @@
-@model PizzaBox.Client.Models.OrderViewModel;
+@model PizzaBox.Client.Models.StoreViewModel;
 
 <header>Choose a Store</header>
-@using (@Html.BeginForm("SelectStore", "Customer", new { id = @Model.Username} ,FormMethod.Post))
+@Html.ValidationMessageFor(m => m.StoreName,"", new { @class = "text-danger" })
+@using (@Html.BeginForm("SelectStore", "Customer", new { id = @Model.Username } ,FormMethod.Post))
 {
   @Html.AntiForgeryToken()
   @foreach (var item in Model.Stores)
@@ -9,5 +10,5 @@
     @Html.RadioButtonFor(m => m.StoreName, item.Name)
     @Html.LabelFor(m => m.StoreName, item.Name)
   }
-  <input type="submit" name = "Storename" class="btn btn-default" value="Choose Store" />
+  <input type="submit" class="btn btn-default" value="Choose Store" />
 }

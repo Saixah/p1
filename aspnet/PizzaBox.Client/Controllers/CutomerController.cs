@@ -11,7 +11,6 @@ namespace PizzaBox.Client.Controllers
   public class CustomerController : Controller
   {
     private AllRepo Repo;
-    private OrderViewModel Order;
 
     public CustomerController(AllRepo _repo)
     {
@@ -28,28 +27,44 @@ namespace PizzaBox.Client.Controllers
     [ValidateAntiForgeryToken]
     public IActionResult NewUser(CustomerViewModel Customer)
     {
+      if(ModelState.IsValid)
+      {
         Repo.UserRepo.AddUser(new User(Customer.Username));
         Repo.Save();
         return RedirectToAction("GetUser");
+      }
+      else
+      {
+        Customer.Users = Repo.UserRepo.ReadUser();
+        return View("Customer",Customer);
+      }
     }
 
-    [HttpPost("/Details")]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult ExistingUser(CustomerViewModel Customer)
     {
-      Customer.User = Repo.UserRepo.ReadOneUser(Customer.Username);
-      Customer.OrderHistory = Repo.OrderRepo.GetOrderByUser(Customer.User);
-      return View("CustomerDetails",Customer);
+      if(ModelState.IsValid)
+      {
+        Customer.User = Repo.UserRepo.ReadOneUser(Customer.Username);
+        Customer.OrderHistory = Repo.OrderRepo.GetOrderByUser(Customer.User);
+        return View("CustomerDetails",Customer);
+      }
+      else
+      {
+        Customer.Users = Repo.UserRepo.ReadUser();
+        return View("Customer",Customer);
+      }
     }
 
-    [HttpGet("/CustomerStores/{id}")]
+    [HttpGet("/Stores/{id}")]
     public IActionResult DisplayStores(string id)
     {
       if(id != null)
       {
-        Order = new OrderViewModel(Repo);
-        Order.Username = RouteData.Values["id"].ToString();
-        return View("Order", Order);
+        var Stores = new StoreViewModel(Repo);
+        Stores.Username = RouteData.Values["id"].ToString();
+        return View("Order", Stores);
       }
       else
       {
@@ -57,24 +72,34 @@ namespace PizzaBox.Client.Controllers
       }
     }
 
-    [HttpPost("/SelectStore")]
+    [HttpPost("/Stores/{id}")]
     [ValidateAntiForgeryToken]
-    public IActionResult SelectStore(string id,OrderViewModel Order)
+    public IActionResult SelectStore(string id,StoreViewModel Store)
     {
-      User _user = new User();
-      _user = Repo.UserRepo.ReadOneUser(id);
-      _user.ChosenStore = Repo.StoreRepo.ReadOneStore(Order.StoreName);
-      Repo.UserRepo.UpdateUser(_user);
-      Repo.Save();
-      var Pizza = new PizzaViewModel(Repo);
-      ViewBag.Username = _user.Name;
-      return View("AddPizza",Pizza);
+      if(ModelState.IsValid)
+      {
+        User _user = new User();
+        _user = Repo.UserRepo.ReadOneUser(id);
+        _user.ChosenStore = Repo.StoreRepo.ReadOneStore(Store.StoreName);
+        Repo.UserRepo.UpdateUser(_user);
+        Repo.Save();
+        var Pizza = new PizzaViewModel(Repo);
+        ViewBag.Username = _user.Name;
+        return View("AddPizza",Pizza);
+      }
+      else
+      {
+        Store.Stores = Repo.StoreRepo.ReadStores();
+        return View("Order",Store);
+      }
     }
 
-    [HttpPost("/MakeNewPizza")]
+    [HttpPost("/MakeNewPizza/{id}")]
     [ValidateAntiForgeryToken]
     public IActionResult MakeNewPizza(string id,string orderid,PizzaViewModel Pizza)
     {
+      if(ModelState.IsValid)
+      {
       User _user;
       Order _order;
       decimal Price = 0;
@@ -116,8 +141,8 @@ namespace PizzaBox.Client.Controllers
       ViewBag.OrderPrice = Price;
 
       Repo.Save();
-      Order = new OrderViewModel();
-      Order.PizzaViewModel = new PizzaViewModel();
+      var Order = new OrderViewModel();
+
       if(orderid ==null)
       {
         Order.Pizzas = _order.Pizzas;
@@ -134,6 +159,14 @@ namespace PizzaBox.Client.Controllers
         Order.Pizzas = tempOrder;
       }
       return View("OrderList",Order);
+      }
+      else
+      {
+        Pizza.DisplayCrusts = Repo.CrustRepo.ReadCrust();
+        Pizza.DisplaySizes = Repo.SizeRepo.ReadSize();
+        Pizza.DisplayToppings = Repo.ToppingRepo.ReadToppings();
+        return View("AddPizza",Pizza);
+      }
     }
 
     [HttpPost("/MakeAnother")]

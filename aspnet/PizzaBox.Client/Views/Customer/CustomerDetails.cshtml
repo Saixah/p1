@@ -1,6 +1,6 @@
 @model PizzaBox.Client.Models.CustomerViewModel;
 
-Hello @Model.User.Name
+Hello @Model.Username
 
 @Html.AntiForgeryToken()
 @using (@Html.BeginForm("DisplayStores", "Customer",new {id = @Model.Username}, FormMethod.Get))

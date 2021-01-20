@@ -54,8 +54,11 @@ else
 {
   <input type="submit" name = "back" value="Add Another"/>
 }
-<br>
-@using (@Html.BeginForm("ExistingUser", "Customer",new{username = @ViewBag.Username}, FormMethod.Post))
+@if(Model.Pizzas.Count >= 2)
 {
-  <input type="submit" name = "Done" value="All Done!"/>
+  <br>
+  @using (@Html.BeginForm("ExistingUser", "Customer",new{username = @ViewBag.Username}, FormMethod.Post))
+  {
+    <input type="submit" name = "Done" value="All Done!"/>
+  }
 }
