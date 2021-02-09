@@ -3,17 +3,24 @@
 The goal of the project is to build a Pizza Ordering System.
 
 ## Technologies Used
-C#
-ASP.NET Core MVC
-.NET Core
-Entity framework Core
+
+* C#
+* ASP.NET Core MVC
+* .NET Core
+* Entity framework Core
+* Azure SQL server
+* HTML/CSS/Bootstrap
+* xUnit
 
 ## Features
-    CRUD op on User, Pizzas, and Orders
-    User can create an order with multiple Pizzas
-    Automatically Update Pricing based on current order
-    Server side validation
-    
-    to-do
-        data-first approach did not allow refactoring of db, 
-        associative table will need to be added for topping percistence
+
+List of features ready and TODOs for future development
+* A user is able to log in/create an account
+* A user is able to search select a store
+* A user is able to create an order
+* A user is able to view all current and previous orders
+* A user is able to add multiple pizzas to an order
+* A store is able to view orders
+
+## License
+This project uses the following license: [MIT License](./LICENSE).
