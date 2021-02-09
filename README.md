@@ -3,9 +3,10 @@
 The goal of the project is to build a Pizza Ordering System.
 
 ## Technologies Used
-    C# v4.0.3
-    EntityFramework.Core v5.1
-    MVC
+C#
+ASP.NET Core MVC
+.NET Core
+Entity framework Core
 
 ## Features
     CRUD op on User, Pizzas, and Orders
